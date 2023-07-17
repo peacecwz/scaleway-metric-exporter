@@ -16,6 +16,10 @@ jobs:
         id: get_version
         uses: battila7/get-version-action@v2
 
+      - name: Set outputs
+        id: vars
+        run: echo "sha_short=$(git rev-parse --short HEAD)" >> $GITHUB_OUTPUT
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
 
@@ -34,6 +38,7 @@ jobs:
         uses: docker/metadata-action@v4
         with:
           images: ghcr.io/${{ github.repository }}
+          tag: ${{ steps.vars.outputs.sha_short }}
 
       - name: Build and push
         uses: docker/build-push-action@v3
@@ -42,6 +47,7 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64
           push: true
+          tags: ghcr.io/${{ github.repository }}:${{ steps.vars.outputs.sha_short }},ghcr.io/${{ github.repository }}:${{ steps.get_version.outputs.version }}
 
       - name: Create Release
         id: create_release
