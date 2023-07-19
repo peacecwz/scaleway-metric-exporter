@@ -55,7 +55,7 @@ func NewRDBCollector(cfg *config.Config, scwClient *scaleway.ScalewayClient) *RD
 			labelsNode, nil,
 		),
 		diskUsageMetrics: prometheus.NewDesc(
-			"scaleway_database_disk_usage_percent",
+			"scaleway_rdb_disk_usage_percent",
 			"RDB disk percentage usage",
 			labelsNode, nil,
 		),
